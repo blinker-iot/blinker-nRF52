@@ -1,118 +1,5 @@
-#ifndef BLINKER_API_H__
-#define BLINKER_API_H__
+#include "BlinkerApi.h"
 
-#if defined(BLINKER_BLE)
-    #include "BlinkerBLE.h"
-#endif
-
-
-typedef struct
-{
-    const char *name;
-    uint8_t wNum;
-} BlinkerButton;
-
-typedef struct
-{
-    const char *name;
-} BlinkerNumber;
-
-typedef struct
-{
-    const char *name;
-    uint8_t wNum;
-} BlinkerRGB;
-
-typedef struct
-{
-    const char *name;
-    uint8_t wNum;
-} BlinkerSlider;
-
-typedef struct
-{
-    const char *name;
-    uint8_t wNum;
-} BlinkerTab;
-
-typedef struct
-{
-    const char *name;
-} BlinkerText;
-
-typedef struct
-{
-    const char *state;
-    const char *icon;
-    const char *color;
-    const char *content;
-    const char *text1;
-    const char *text2;
-    const char *textColor;
-} blinker_button_config_t;
-
-typedef struct
-{
-    const char *icon;
-    const char *color;
-    const char *unit;
-    const char *text;
-    const char *value;
-} blinker_number_config_t;
-
-typedef struct
-{
-    uint8_t rgbw[4];
-} blinker_rgb_config_t;
-
-typedef struct
-{
-    const char *color;
-    const char *value;
-} blinker_slider_config_t;
-
-typedef struct
-{
-    const char *state;
-} blinker_switch_config_t;
-
-typedef struct
-{
-    uint8_t tab[5];
-} blinker_tab_config_t;
-
-typedef struct
-{
-    const char *icon;
-    const char *color;
-    const char *text;
-    const char *text1;
-} blinker_text_config_t;
-
-typedef struct
-{
-    const char *name;
-    blinker_callback_with_string_arg_t wfunc;
-} blinker_widgets_str_t;
-
-typedef struct
-{
-    const char *name;
-    blinker_callback_with_rgb_arg_t wfunc;
-} blinker_widgets_rgb_t;
-
-typedef struct
-{
-    const char *name;
-    blinker_callback_with_int32_arg_t wfunc;
-} blinker_widgets_int_t;
-
-typedef struct
-{
-    const char *name;
-    blinker_callback_with_tab_arg_t wfunc;
-    blinker_callback_t wfunc1;
-} blinker_widgets_tab_t;
 
 static blinker_widgets_str_t   _Widgets_str[BLINKER_MAX_WIDGET_SIZE];
 static blinker_widgets_rgb_t   _Widgets_rgb[BLINKER_MAX_WIDGET_SIZE/2];
@@ -132,16 +19,13 @@ static char blinker_send_buf[BLINKER_MAX_SEND_SIZE] = { 0 };
 static int  raw_data[4] = {0,0,0,0};
 static uint8_t raw_len = 0;
 
-void blinker_print(const char * key, const char * value, int8_t isRaw);
-void run();
-
 int8_t check_string_num(const char *name, const blinker_widgets_str_t *c, uint8_t count)
 {
     for (uint8_t cNum = 0; cNum < count; cNum++)
     {
         if (strcmp(c[cNum].name, name) == 0)
         {
-            // BLINKER_LOG_ALL("check_string_num, name: %s, num: %d", name, cNum);
+            // // BLINKER_LOG_ALL("check_string_num, name: %s, num: %d", name, cNum);
             return cNum;
         }
     }
@@ -155,7 +39,7 @@ int8_t check_rgb_num(const char *name, const blinker_widgets_rgb_t *c, uint8_t c
     {
         if (strcmp(c[cNum].name, name) == 0)
         {
-            // BLINKER_LOG_ALL("check_rgb_num, name: %s, num: %d", name, cNum);
+            // // BLINKER_LOG_ALL("check_rgb_num, name: %s, num: %d", name, cNum);
             return cNum;
         }
     }
@@ -169,7 +53,7 @@ int8_t check_int_num(const char *name, const blinker_widgets_int_t *c, uint8_t c
     {
         if (strcmp(c[cNum].name, name) == 0)
         {
-            // BLINKER_LOG_ALL("check_rgb_num, name: %s, num: %d", name, cNum);
+            // // BLINKER_LOG_ALL("check_rgb_num, name: %s, num: %d", name, cNum);
             return cNum;
         }
     }
@@ -183,7 +67,7 @@ int8_t check_tab_num(const char *name, const blinker_widgets_tab_t *c, uint8_t c
     {
         if (strcmp(c[cNum].name, name) == 0)
         {
-            // BLINKER_LOG_ALL("check_rgb_num, name: %s, num: %d", name, cNum);
+            // // BLINKER_LOG_ALL("check_rgb_num, name: %s, num: %d", name, cNum);
             return cNum;
         }
     }
@@ -203,7 +87,7 @@ uint8_t attach_widget_string(const char *_name, blinker_callback_with_string_arg
             _Widgets_str[_wCount_str].wfunc = _func;
             _wCount_str++;
 
-            BLINKER_LOG_ALL("new widgets: %s, _wCount_str: %d", _name, _wCount_str);
+            // BLINKER_LOG_ALL("new widgets: %s, _wCount_str: %d", _name, _wCount_str);
             return _wCount_str;
         }
         else
@@ -213,7 +97,7 @@ uint8_t attach_widget_string(const char *_name, blinker_callback_with_string_arg
     }
     else if(num >= 0 )
     {
-        BLINKER_ERR_LOG("widgets name > %s < has been registered, please register another name!", _name);
+        // BLINKER_ERR_LOG("widgets name > %s < has been registered, please register another name!", _name);
         return 0;
     }
     else
@@ -234,7 +118,7 @@ uint8_t attach_widget_rgb(const char *_name, blinker_callback_with_rgb_arg_t _fu
             _Widgets_rgb[_wCount_rgb].wfunc = _func;
             _wCount_rgb++;
 
-            BLINKER_LOG_ALL("new widgets: %s, _wCount_rgb: %d", _name, _wCount_rgb);
+            // BLINKER_LOG_ALL("new widgets: %s, _wCount_rgb: %d", _name, _wCount_rgb);
             return _wCount_rgb;
         }
         else
@@ -244,7 +128,7 @@ uint8_t attach_widget_rgb(const char *_name, blinker_callback_with_rgb_arg_t _fu
     }
     else if(num >= 0 )
     {
-        BLINKER_ERR_LOG("widgets name > %s < has been registered, please register another name!", _name);
+        // BLINKER_ERR_LOG("widgets name > %s < has been registered, please register another name!", _name);
         return 0;
     }
     else
@@ -265,7 +149,7 @@ uint8_t attach_widget_int(const char *_name, blinker_callback_with_int32_arg_t _
             _Widgets_int[_wCount_int].wfunc = _func;
             _wCount_int++;
 
-            BLINKER_LOG_ALL("new widgets: %s, _wCount_int: %d", _name, _wCount_int);
+            // BLINKER_LOG_ALL("new widgets: %s, _wCount_int: %d", _name, _wCount_int);
             return _wCount_int;
         }
         else
@@ -275,7 +159,7 @@ uint8_t attach_widget_int(const char *_name, blinker_callback_with_int32_arg_t _
     }
     else if(num >= 0 )
     {
-        BLINKER_ERR_LOG("widgets name > %s < has been registered, please register another name!", _name);
+        // BLINKER_ERR_LOG("widgets name > %s < has been registered, please register another name!", _name);
         return 0;
     }
     else
@@ -297,7 +181,7 @@ uint8_t attach_widget_tab(const char *_name, blinker_callback_with_tab_arg_t _fu
             _Widgets_tab[_wCount_tab].wfunc1 = _func1;
             _wCount_tab++;
 
-            BLINKER_LOG_ALL("new widgets: %s, _wCount_tab: %d", _name, _wCount_tab);
+            // BLINKER_LOG_ALL("new widgets: %s, _wCount_tab: %d", _name, _wCount_tab);
             return _wCount_tab;
         }
         else
@@ -307,7 +191,7 @@ uint8_t attach_widget_tab(const char *_name, blinker_callback_with_tab_arg_t _fu
     }
     else if(num >= 0 )
     {
-        BLINKER_ERR_LOG("widgets name > %s < has been registered, please register another name!", _name);
+        // BLINKER_ERR_LOG("widgets name > %s < has been registered, please register another name!", _name);
         return 0;
     }
     else
@@ -337,7 +221,7 @@ void blinker_button_print(const BlinkerButton *button, const blinker_button_conf
     blinker_print(button->name, _data, 0);
 
     free(_data);
-    BLINKER_LOG_ALL("blinker_button_print");
+    // BLINKER_LOG_ALL("blinker_button_print");
 }
 
 void blinker_number_print(const BlinkerNumber *number, const blinker_number_config_t * config)
@@ -381,7 +265,7 @@ void blinker_rgb_print(const BlinkerRGB *rgb, const blinker_rgb_config_t * confi
 
     // cJSON_AddRawToObject(pValue, BLINKER_CMD_RGB, data);
 
-    // BLINKER_LOG_ALL("%s", cJSON_PrintUnformatted(pValue));
+    // // BLINKER_LOG_ALL("%s", cJSON_PrintUnformatted(pValue));
 
     // cJSON_Delete(pValue);
 
@@ -391,7 +275,7 @@ void blinker_rgb_print(const BlinkerRGB *rgb, const blinker_rgb_config_t * confi
     raw_data[2] = config->rgbw[2];
     raw_data[3] = config->rgbw[3];
 
-    BLINKER_LOG_ALL("rgb: %d, %d, %d, %d", raw_data[0], raw_data[1], raw_data[2], raw_data[3]);
+    // BLINKER_LOG_ALL("rgb: %d, %d, %d, %d", raw_data[0], raw_data[1], raw_data[2], raw_data[3]);
 
     blinker_print(rgb->name, data, 1);
 
@@ -449,7 +333,7 @@ void blinker_tab_print(const BlinkerTab *tab, const blinker_tab_config_t * confi
 
     // cJSON_AddRawToObject(pValue, BLINKER_CMD_RGB, data);
 
-    // BLINKER_LOG_ALL("%s", cJSON_PrintUnformatted(pValue));
+    // // BLINKER_LOG_ALL("%s", cJSON_PrintUnformatted(pValue));
     char *_data;
     _data = cJSON_PrintUnformatted(pValue);
     cJSON_Delete(pValue);
@@ -507,7 +391,7 @@ void blinker_tab_init(BlinkerTab *tab, blinker_callback_with_tab_arg_t _func, bl
 
 void widget_string_parse(const char *_wName, cJSON *data)
 {
-    BLINKER_LOG_ALL("_Widgets_str _wName: %s", _wName);
+    // BLINKER_LOG_ALL("_Widgets_str _wName: %s", _wName);
 
     int8_t num = check_string_num(_wName, _Widgets_str, _wCount_str);
 
@@ -515,17 +399,17 @@ void widget_string_parse(const char *_wName, cJSON *data)
 
     cJSON *state = cJSON_GetObjectItem(data, _wName);
 
-    // BLINKER_LOG_ALL("_Widgets_str num: %d", num);
+    // // BLINKER_LOG_ALL("_Widgets_str num: %d", num);
 
-    BLINKER_LOG_ALL("_Widgets_str null: %d", state->string == NULL);
+    // BLINKER_LOG_ALL("_Widgets_str null: %d", state->string == NULL);
 
     if (state->type == cJSON_String)
     {
-        BLINKER_LOG_ALL("widget_string_parse isParsed");
+        // BLINKER_LOG_ALL("widget_string_parse isParsed");
 
         blinker_parsed = true;
 
-        BLINKER_LOG_ALL("widget_string_parse: %s", _wName);
+        // BLINKER_LOG_ALL("widget_string_parse: %s", _wName);
 
         blinker_callback_with_string_arg_t nbFunc = _Widgets_str[num].wfunc;
 
@@ -537,7 +421,7 @@ void widget_string_parse(const char *_wName, cJSON *data)
 
 void widget_rgb_parse(const char *_wName, cJSON *data)
 {
-    BLINKER_LOG_ALL("_Widgets_rgb _wName: %s", _wName);
+    // BLINKER_LOG_ALL("_Widgets_rgb _wName: %s", _wName);
 
     int8_t num = check_rgb_num(_wName, _Widgets_rgb, _wCount_rgb);
 
@@ -545,15 +429,15 @@ void widget_rgb_parse(const char *_wName, cJSON *data)
 
     cJSON *state = cJSON_GetObjectItem(data, _wName);
 
-    BLINKER_LOG_ALL("_Widgets_rgb num: %d", num);
+    // BLINKER_LOG_ALL("_Widgets_rgb num: %d", num);
 
     if (state->type == cJSON_Array)
     {
-        BLINKER_LOG_ALL("widget_rgb_parse isParsed");
+        // BLINKER_LOG_ALL("widget_rgb_parse isParsed");
 
         blinker_parsed = true;
 
-        BLINKER_LOG_ALL("widget_rgb_parse: %s", _wName);
+        // BLINKER_LOG_ALL("widget_rgb_parse: %s", _wName);
 
         blinker_callback_with_rgb_arg_t nbFunc = _Widgets_rgb[num].wfunc;
 
@@ -565,7 +449,7 @@ void widget_rgb_parse(const char *_wName, cJSON *data)
 
 void widget_int_parse(const char *_wName, cJSON *data)
 {
-    BLINKER_LOG_ALL("_Widgets_int _wName: %s", _wName);
+    // BLINKER_LOG_ALL("_Widgets_int _wName: %s", _wName);
 
     int8_t num = check_int_num(_wName, _Widgets_int, _wCount_int);
 
@@ -573,15 +457,15 @@ void widget_int_parse(const char *_wName, cJSON *data)
 
     cJSON *state = cJSON_GetObjectItem(data, _wName);
 
-    BLINKER_LOG_ALL("_Widgets_int num: %d", num);
+    // BLINKER_LOG_ALL("_Widgets_int num: %d", num);
 
     if (state->type == cJSON_Number)
     {
-        BLINKER_LOG_ALL("widget_int_parse isParsed");
+        // BLINKER_LOG_ALL("widget_int_parse isParsed");
 
         blinker_parsed = true;
 
-        BLINKER_LOG_ALL("widget_int_parse: %s", _wName);
+        // BLINKER_LOG_ALL("widget_int_parse: %s", _wName);
 
         blinker_callback_with_int32_arg_t nbFunc = _Widgets_int[num].wfunc;
 
@@ -593,7 +477,7 @@ void widget_int_parse(const char *_wName, cJSON *data)
 
 void widget_tab_parse(const char *_wName, cJSON *data)
 {
-    BLINKER_LOG_ALL("_Widgets_tab _wName: %s", _wName);
+    // BLINKER_LOG_ALL("_Widgets_tab _wName: %s", _wName);
 
     int8_t num = check_tab_num(_wName, _Widgets_tab, _wCount_tab);
 
@@ -601,15 +485,15 @@ void widget_tab_parse(const char *_wName, cJSON *data)
 
     cJSON *state = cJSON_GetObjectItem(data, _wName);
 
-    BLINKER_LOG_ALL("_Widgets_tab num: %d", num);
+    // BLINKER_LOG_ALL("_Widgets_tab num: %d", num);
 
     if (state->type == cJSON_String)
     {
-        BLINKER_LOG_ALL("widget_tab_parse isParsed");
+        // BLINKER_LOG_ALL("widget_tab_parse isParsed");
 
         blinker_parsed = true;
 
-        BLINKER_LOG_ALL("widget_tab_parse: %s", _wName);
+        // BLINKER_LOG_ALL("widget_tab_parse: %s", _wName);
 
         blinker_callback_with_tab_arg_t nbFunc = _Widgets_tab[num].wfunc;
 
@@ -623,13 +507,13 @@ void widget_tab_parse(const char *_wName, cJSON *data)
         tab_data = cJSON_PrintUnformatted(state);
         // cJSON_Delete(pValue);
 
-        BLINKER_LOG_ALL("tab_data: %c", tab_data[1]);
+        // BLINKER_LOG_ALL("tab_data: %c", tab_data[1]);
 
         if (nbFunc)
         {
             for (uint8_t num = 0; num < 5; num++)
             {
-                BLINKER_LOG_ALL("num: %c", tab_data[num + 1]);
+                // BLINKER_LOG_ALL("num: %c", tab_data[num + 1]);
 
                 if (tab_data[num + 1] == '1')
                 {
@@ -672,7 +556,7 @@ void widget_tab_parse(const char *_wName, cJSON *data)
 
 void widget_parse(cJSON *data)
 {
-    BLINKER_LOG_ALL("widget_parse");
+    // BLINKER_LOG_ALL("widget_parse");
 
     for (uint8_t wNum = 0; wNum < _wCount_str; wNum++) {
         if (blinker_parsed) return;
@@ -703,10 +587,10 @@ void blinker_attach_data(blinker_callback_with_json_arg_t func)
 //     {
 //         if ((blinker_millis() - blinker_auto_format_time) >= BLINKER_MSG_AUTOFORMAT_TIMEOUT)
 //         {
-//             // BLINKER_LOG_ALL("blinker_check_auto_format");
+//             // // BLINKER_LOG_ALL("blinker_check_auto_format");
 //             if (strlen(blinker_send_buf))
 //             {
-//                 // BLINKER_LOG_ALL("print: %s", blinker_send_buf);
+//                 // // BLINKER_LOG_ALL("print: %s", blinker_send_buf);
 //                 uint8_t need_check = true;
 //                 if (strstr(blinker_send_buf, BLINKER_CMD_CONNECTED)) need_check = false;
 //                 blinker_ble_print(blinker_send_buf, need_check);
@@ -730,7 +614,7 @@ void blinker_check_format(void)
 
 void blinker_auto_format_data(const char * key, const char * value, int8_t isRaw)
 {
-    BLINKER_LOG_ALL("auto_format_data key: %s, value: %s", key, value);
+    // BLINKER_LOG_ALL("auto_format_data key: %s, value: %s", key, value);
 
     if (strlen(blinker_send_buf))
     {
@@ -757,12 +641,12 @@ void blinker_auto_format_data(const char * key, const char * value, int8_t isRaw
                 // cJSON_AddRawToObject(root, key, value);
                 
                 cJSON_AddItemToObject(root, key, cJSON_CreateIntArray(raw_data, raw_len));
-                BLINKER_LOG_ALL("cJSON_AddRawToObject");
+                // BLINKER_LOG_ALL("cJSON_AddRawToObject");
             }
             else 
             {
                 cJSON_AddStringToObject(root, key, value);
-                BLINKER_LOG_ALL("cJSON_AddStringToObject");
+                // BLINKER_LOG_ALL("cJSON_AddStringToObject");
             }
         }
 
@@ -770,8 +654,8 @@ void blinker_auto_format_data(const char * key, const char * value, int8_t isRaw
         strcpy(blinker_send_buf, _data);
         free(_data);
         cJSON_Delete(root);
-        BLINKER_LOG_ALL("auto_format_data2: %s", blinker_send_buf);
-        BLINKER_LOG_ALL("auto_format_data2 end");
+        // BLINKER_LOG_ALL("auto_format_data2: %s", blinker_send_buf);
+        // BLINKER_LOG_ALL("auto_format_data2 end");
     }
     else
     {
@@ -789,12 +673,12 @@ void blinker_auto_format_data(const char * key, const char * value, int8_t isRaw
                 // cJSON_AddRawToObject(root, key, value);
                 
                 cJSON_AddItemToObject(root, key, cJSON_CreateIntArray(raw_data, raw_len));
-                BLINKER_LOG_ALL("cJSON_AddRawToObject");
+                // BLINKER_LOG_ALL("cJSON_AddRawToObject");
             }
             else 
             {
                 cJSON_AddStringToObject(root, key, value);
-                BLINKER_LOG_ALL("cJSON_AddStringToObject");
+                // BLINKER_LOG_ALL("cJSON_AddStringToObject");
             }
         }
 
@@ -802,11 +686,11 @@ void blinker_auto_format_data(const char * key, const char * value, int8_t isRaw
         strcpy(blinker_send_buf, _data);
         free(_data);
         cJSON_Delete(root);
-        BLINKER_LOG_ALL("auto_format_data3: %s", blinker_send_buf);
-        BLINKER_LOG_ALL("auto_format_data3 end");
+        // BLINKER_LOG_ALL("auto_format_data3: %s", blinker_send_buf);
+        // BLINKER_LOG_ALL("auto_format_data3 end");
     }
 
-    BLINKER_LOG_ALL("auto_format_data end");
+    // BLINKER_LOG_ALL("auto_format_data end");
 }
 
 void blinker_print(const char * key, const char * value, int8_t isRaw)
@@ -819,7 +703,7 @@ void blinker_print(const char * key, const char * value, int8_t isRaw)
     //     blinker_auto_format_time = blinker_millis();
     // }
 
-    // BLINKER_LOG_ALL("blinker_auto_format_data end");
+    // // BLINKER_LOG_ALL("blinker_auto_format_data end");
 
     uint8_t need_check = true;
     if (strstr(blinker_send_buf, BLINKER_CMD_CONNECTED)) need_check = false;
@@ -853,13 +737,13 @@ void blinker_heart_beat(cJSON *_data)
 
 void blinker_parse(const char * data)
 {
-    BLINKER_LOG("blinekr parse data:%s", data);
+    // BLINKER_LOG("blinekr parse data:%s", data);
 
     blinker_parsed = false;
     
     if (!isJson(data))
     {
-        BLINKER_ERR_LOG("not a json format data");
+        // BLINKER_ERR_LOG("not a json format data");
     }
     else
     {
@@ -886,7 +770,7 @@ void blinker_parse(const char * data)
         }
         else
         {
-            BLINKER_LOG("blinekr parse _data:%s", _data->valuestring);
+            // BLINKER_LOG("blinekr parse _data:%s", _data->valuestring);
             blinker_heart_beat(root);
             widget_parse(_data);
 
@@ -901,7 +785,7 @@ void blinker_parse(const char * data)
             }
         }
 
-        BLINKER_LOG_ALL("blinker_parse");
+        // BLINKER_LOG_ALL("blinker_parse");
 
         // cJSON_Delete(_data);
         cJSON_Delete(root);
@@ -912,18 +796,18 @@ void blinker_parse(const char * data)
 
 void blinker_init(void)
 {
-    // blinker_log_init();
-    // BLINKER_LOG("blinker v%s", BLINKER_VERSION);
-    // BLINKER_LOG("    To better use blinker with your IoT project!");
-    // BLINKER_LOG("    Download latest blinker library here!");
-    // BLINKER_LOG("    => https://github.com/blinker-iot/blinker-nRF52");        
-    // BLINKER_LOG("heap: %d", xPortGetFreeHeapSize());
+    // // BLINKER_LOG_init();
+    // // BLINKER_LOG("blinker v%s", BLINKER_VERSION);
+    // // BLINKER_LOG("    To better use blinker with your IoT project!");
+    // // BLINKER_LOG("    Download latest blinker library here!");
+    // // BLINKER_LOG("    => https://github.com/blinker-iot/blinker-nRF52");        
+    // // BLINKER_LOG("heap: %d", xPortGetFreeHeapSize());
 
     // run();
 
     blinker_ble_init(blinker_parse);
         
-    // BLINKER_LOG("heap: %d", xPortGetFreeHeapSize());
+    // // BLINKER_LOG("heap: %d", xPortGetFreeHeapSize());
     
     // const char *strings[7]={"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
 	// cJSON *root;
@@ -941,7 +825,7 @@ void blinker_init(void)
     // vTaskStartScheduler();
 
     // // printf("run time %d,%d\r\n", app_timer_cnt_get(), app_timer_cnt_get()* ( (1 + 1 ) * 1000 ) / APP_TIMER_CLOCK_FREQ);
-    // // BLINKER_LOG("test");
+    // // // BLINKER_LOG("test");
 
     // for (;;)
     // {
@@ -961,7 +845,7 @@ void blinker_init(void)
 //         if (blinker_ble_avaliable())
 //         {
 //             blinker_parse(blinker_ble_lastread());
-//             BLINKER_LOG("heap: %d", xPortGetFreeHeapSize());
+//             // BLINKER_LOG("heap: %d", xPortGetFreeHeapSize());
 //             // blinker_ble_flush();
 //         }
 //         vTaskDelay(10);
@@ -972,9 +856,7 @@ void blinker_init(void)
 
 void run(void)
 {
-    BLINKER_LOG("blinker run");
+    // BLINKER_LOG("blinker run");
 
     // UNUSED_VARIABLE(xTaskCreate(blinker_run, "blinker_run", 128, NULL, 2, &m_blinkr_run_thread));
 }
-
-#endif

@@ -1,5 +1,3 @@
-#ifndef BLINKER_BLE_H__
-#define BLINKER_BLE_H__
 
 /**
  * Copyright (c) 2017 - 2019, Nordic Semiconductor ASA
@@ -53,8 +51,9 @@
              in Bluetooth Specification Version 5.0 Vol 3, Part G Section 7.
 */
 
-#include <stdint.h>
-#include <string.h>
+#include "BlinkerBle.h"
+
+#if NRF_MODULE_ENABLED(BLINKER_BLE)
 
 // #include "app_adv.h"
 #include "nordic_common.h"
@@ -90,13 +89,8 @@
 #include "nrf_sdh_soc.h"
 #include "nrf_sdh_ble.h"
 #include "nrf_log.h"
-
-#include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
-
-#include "ble_bts.h"
-#include "BlinkerDebug.h"
 
 #define APP_BLE_OBSERVER_PRIO 3                                     /**< Application's BLE observer priority. You shouldn't need to modify this value. */
 #define APP_BLE_CONN_CFG_TAG  1                                     /**< A tag identifying the SoftDevice BLE configuration. */
@@ -1032,6 +1026,5 @@ void blinker_ble_init(blinker_callback_with_string_arg_t func)
 /**
  * @}
  */
-
 
 #endif

@@ -49,6 +49,11 @@
 // <h> Application 
 
 //==========================================================
+
+#ifndef BLINKER_BLE_ENABLED
+#define BLINKER_BLE_ENABLED 1
+#endif
+
 // <o> ADV_INTERVAL - Advertising interval in milliseconds 
 #ifndef ADV_INTERVAL
 #define ADV_INTERVAL 300

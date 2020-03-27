@@ -1,4 +1,4 @@
-#define BLINKER_BLE
+// #define BLINKER_BLE
 
 #include "BlinkerApi.h"
 
@@ -10,7 +10,7 @@ int counter = 0;
 
 void button1_callback(const char *data)
 {
-    BLINKER_LOG("get button data: %s", data);
+    // BLINKER_LOG("get button data: %s", data);
 
     blinker_button_config_t config = {
         .icon = "fas fa-alicorn",
@@ -23,10 +23,10 @@ void button1_callback(const char *data)
 
 void rgb1_callback(uint8_t r_value, uint8_t g_value, uint8_t b_value, uint8_t bright_value)
 {
-    BLINKER_LOG("R value: %d", r_value);
-    BLINKER_LOG("G value: %d", g_value);
-    BLINKER_LOG("B value: %d", b_value);
-    BLINKER_LOG("Rrightness value: %d", bright_value);
+    // BLINKER_LOG("R value: %d", r_value);
+    // BLINKER_LOG("G value: %d", g_value);
+    // BLINKER_LOG("B value: %d", b_value);
+    // BLINKER_LOG("Rrightness value: %d", bright_value);
 
     blinker_rgb_config_t config = {
         .rgbw = {r_value, g_value, b_value, bright_value},
@@ -37,7 +37,7 @@ void rgb1_callback(uint8_t r_value, uint8_t g_value, uint8_t b_value, uint8_t br
 
 void data_callback(const cJSON *data)
 {
-    BLINKER_LOG("get json data");
+    // BLINKER_LOG("get json data");
 
     counter++;
 
@@ -53,7 +53,7 @@ void data_callback(const cJSON *data)
 
 void main(void)
 {
-    BLINKER_DEBUG_ALL();
+    // BLINKER_DEBUG_ALL();
     
     blinker_button_init(&button1, button1_callback);
     blinker_rgb_init(&rgb1, rgb1_callback);
